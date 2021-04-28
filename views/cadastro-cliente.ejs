@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body>
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <h4 class='title text-center my-3'>Cadastro de Cliente</h4>
+      <form method="post">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" id="senha" name="senha">
+        </div>
+        <div class="form-group">
+          <label for="primeiro_nome">Primeiro nome</label>
+          <input class="form-control" type="text" id="primeiro_nome">
+        </div>
+        <div class="form-group">
+          <label for="sobrenome">Sobrenome</label>
+          <input class="form-control" type="text" id="sobrenome">
+        </div>
+        <div class="form-group">
+          <label for="cpf">CPF <span class="txt-sm">(Apenas números)</span></label>
+          <input class="form-control" type="number" id="cpf" name="cpf">
+        </div>
+        <div class="form-group">
+          <label for="rg">RG <span class="txt-sm">(Apenas números)</span></label>
+          <input class="form-control" type="number" id="rg" name="rg">
+        </div>
+        <div class="form-group">
+          <label for="telefone">Telefone <span class="txt-sm">(DDI DDD NUMERO, exemplo: 55 11 912345678)</span></label>
+          <input class="form-control" type="text" id="telefone" name="telefone" placeholder="">
+        </div>
+        <div class="form-group">
+        <button type="button" onclick="addAddress();" class="btn btn-outline-primary col-12">Adicionar Endereço</button>
+        </div>
+        <div id="addressWrapper"></div>
+        <button type="button" onclick="submitForm();" class="btn btn-primary col-12">Finalizar Cadastro</button>
+      </form>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>
+
+<script>
+  let addressWrapper = document.querySelector('#addressWrapper');
+  let lastAdress = 0;
+
+  const getEnderecos = () => {
+    enderecos = [];
+    enderecosForm = document.querySelectorAll('.endereco');
+
+    for (const endereco of enderecosForm) {
+      newEndereco = {
+        cep: endereco.querySelector(".cep").value,
+        logradouro: endereco.querySelector(".logradouro").value,
+        numero: parseInt(endereco.querySelector(".numero").value),
+        cidade: endereco.querySelector(".cidade").value,
+        bairro: endereco.querySelector(".bairro").value,
+        pais: endereco.querySelector(".pais").value,
+      }
+      enderecos.push(newEndereco);
+    }
+
+    return enderecos;
+  }
+
+  const submitForm = () => {
+    let email = document.getElementById('email').value;
+    let senha = document.getElementById('senha').value;
+    let primeiro_nome = document.getElementById('primeiro_nome').value;
+    let sobrenome = document.getElementById('sobrenome').value;
+    let cpf = document.getElementById('cpf').value;
+    let rg = document.getElementById('rg').value;
+    let telefone = document.getElementById('telefone').value;
+    let newUser = {
+      email,
+      senha,
+      primeiro_nome,
+      sobrenome,
+      cpf,
+      rg,
+      telefone,
+      enderecos: getEnderecos()
+    }
+
+    fetch("/cadastro/cliente", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+    //make sure to serialize your JSON body
+    body: JSON.stringify(newUser)
+    })
+    .then(function(response) {
+        if(response.status == 201) {
+          alert("sucesso")
+        }
+        else{
+          alert("erro")
+        }
+    })
+  }
+
+  const addAddress = () => {
+    lastAdress++;
+    let htmlNewAdress = `
+    <div class="endereco" id="${lastAdress}">
+      <h5>Endereço ${lastAdress}:</h5>
+      <div class="form-group">
+        <label for="cep${lastAdress}">CEP:</label>
+        <input class="form-control cep" type="text" id="cep${lastAdress}" name="cep${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Logradouro${lastAdress}">Logradouro:</label>
+        <input class="form-control logradouro" type="text" id="Logradouro${lastAdress}" name="Logradouro${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Numero${lastAdress}">Numero:</label>
+        <input class="form-control numero" type="number" id="Numero${lastAdress}" name="Numero${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Cidade${lastAdress}">Cidade:</label>
+        <input class="form-control cidade" type="text" id="Cidade${lastAdress}" name="Cidade${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Bairro${lastAdress}">Bairro:</label>
+        <input class="form-control bairro" type="text" id="Bairro${lastAdress}" name="Bairro${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Pais${lastAdress}">País:</label>
+        <input class="form-control pais" type="text" id="Pais${lastAdress}" name="Pais${lastAdress}">
+      </div>
+      <div class="form-group">
+        <label for="Complemento${lastAdress}">Complemento:</label>
+        <input class="form-control complemento" type="text" id="Complemento${lastAdress}" name="Complemento${lastAdress}">
+      </div>
+    </div>
+    `
+
+    let wrapper= document.createElement('div');
+    wrapper.innerHTML= htmlNewAdress;
+    let div= wrapper.firstElementChild;
+    
+    addressWrapper.appendChild(div);
+  }
+</script>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body >
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <h2 class='title text-center my-3'>Cadastro de Restaurante</h2>
+      <form>
+        <h4>Informações Fiscais</h4>
+        <div class="form-group">
+          <label for="exampleInputPassword1">CPNJ (Apenas números)</label>
+          <input class="form-control" type="text">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Senha</label>
+          <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Nome Oficial</label>
+          <input class="form-control" type="text">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Nome Fantasia</label>
+          <input class="form-control" type="text">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Endereço</label>
+          <input class="form-control" type="text">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Telefones</label>
+          <input class="form-control" type="text">
+        </div>
+        <h4>Informações de Atendimento</h4>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Região de atendimento</label>
+          <input class="form-control" type="text">
+        </div>
+        <h5>Horário de Atendimento</h5>
+        <div class="form-group">
+          <label for="exampleInputPassword1">De:</label>
+          <input class="form-control" type="time">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Até</label>
+          <input class="form-control" type="time">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Tipo de comida servida</label>
+          <select class="form-control" id="exampleFormControlSelect1">
+            <option value="Japonesa">Japonesa</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Brasileira">Brasileira</option>
+            <option value="Vegetariana">Vegetariana</option>
+            <option value="Massas">Japonesa</option>
+            <option value="Doces e bolos">Doces e bolos</option>
+            <option value="Lanches">Lanches</option>
+            <option value="Mexicana">Mexicana</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary col-12">Finalizar Cadastro</button>
+      </form>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>

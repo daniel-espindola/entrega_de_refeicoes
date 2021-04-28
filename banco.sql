@@ -1,0 +1,165 @@
+create database entrega_de_refeicoes;
+
+use entrega_de_refeicoes;
+
+CREATE TABLE Entregador (
+    CPF_Entregador CHARACTER(11) NOT NULL,
+    RG CHARACTER(9) NOT NULL,
+    Avaliacao DECIMAL,
+    PrimeroNome VARCHAR(50) NOT NULL,
+    Sobrenome VARCHAR(100) NOT NULL,
+	PRIMARY KEY (CPF_Entregador)
+);
+
+CREATE TABLE Veiculo (
+    Placa CHARACTER(7) NOT NULL,
+    CPF_Entregador CHARACTER(11) NOT NULL,
+    Modelo VARCHAR(30) NOT NULL,
+    Marca VARCHAR(30) NOT NULL,
+	PRIMARY KEY (Placa),
+	FOREIGN KEY (CPF_Entregador) REFERENCES Entregador(CPF_Entregador)
+);
+
+CREATE TABLE Email (
+    CPF CHARACTER(11) NOT NULL,
+    EnderecoEmail VARCHAR(50) NOT NULL,
+	PRIMARY KEY (CPF)
+);
+
+CREATE TABLE Telefone (
+    CPF CHARACTER(11) NOT NULL,
+    DDI INTEGER NOT NULL,
+    DDD INTEGER NOT NULL,
+    Numero INTEGER NOT NULL,
+	PRIMARY KEY (CPF)
+);
+
+CREATE TABLE Endereco (
+    CPF CHARACTER(11) NOT NULL,
+    CEP CHARACTER(8) NOT NULL,
+    Logradouro VARCHAR(50) NOT NULL,
+    Complemento VARCHAR(100),
+    Cidade VARCHAR(50) NOT NULL,
+    Bairro VARCHAR(30) NOT NULL,
+    Pais VARCHAR(20) NOT NULL,
+    Numero INTEGER NOT NULL,
+	PRIMARY KEY (CPF)
+);
+
+CREATE TABLE Cliente (
+    CPF_Cliente CHARACTER(11) NOT NULL,
+    Senha VARCHAR(70) NOT NULL,
+    RG CHARACTER(9) NOT NULL,
+    PrimeiroNome VARCHAR(50) NOT NULL,
+    Sobrenome VARCHAR(100) NOT NULL,
+	PRIMARY KEY (CPF_Cliente)
+);
+
+CREATE TABLE Cartao (
+    NumeroCartao CHARACTER(16) NOT NULL,
+    CPF_Cliente CHARACTER(11) NOT NULL,
+    NomeCartao VARCHAR(80) NOT NULL,
+    DataValidade DATE NOT NULL,
+    CVV INTEGER NOT NULL,
+	PRIMARY KEY (NumeroCartao),
+	FOREIGN KEY (CPF_Cliente) REFERENCES Cliente(CPF_Cliente)
+);
+
+CREATE TABLE FormaPagamento (
+    CodigoFormaPagamento CHARACTER(2) NOT NULL,
+    NomeFormaPagamento VARCHAR(30) NOT NULL,
+	PRIMARY KEY (CodigoFormaPagamento)
+);
+
+CREATE TABLE Foto (
+    IdFoto INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
+    LinkFoto VARCHAR(1000) NOT NULL,
+	PRIMARY KEY (IdFoto)
+);
+
+CREATE TABLE Comida (
+    TipoComida VARCHAR(50) NOT NULL,
+	PRIMARY KEY (TipoComida)
+);
+
+CREATE TABLE Restaurante (
+    Senha VARCHAR(70) NOT NULL,
+    CNPJ CHARACTER(14) NOT NULL,
+    HorarioFuncionamento TIME NOT NULL,
+    NomeFantasia CHARACTER(100) NOT NULL,
+    NomeOficial CHARACTER(100) NOT NULL,
+	PRIMARY KEY (CNPJ)
+);
+
+CREATE TABLE RegiaoAtendimento (
+    CodigoRegiao VARCHAR(50) NOT NULL,
+	  CNPJ CHARACTER(14) NOT NULL,
+    PRIMARY KEY (CodigoRegiao),
+	FOREIGN KEY (CNPJ) REFERENCES Restaurante(CNPJ)
+);
+
+CREATE TABLE EnderecoRestaurante (
+    CNPJ CHARACTER(14) NOT NULL,
+    CEP CHARACTER(8) NOT NULL,
+    Logradouro VARCHAR(50) NOT NULL,
+    Numero INTEGER NOT NULL,
+    Cidade VARCHAR(50) NOT NULL,
+    Bairro VARCHAR(30) NOT NULL,
+    Pais VARCHAR(20) NOT NULL,
+    Complemento VARCHAR(100),
+	PRIMARY KEY (CNPJ),
+	FOREIGN KEY (CNPJ) REFERENCES Restaurante(CNPJ)
+);
+
+CREATE TABLE TelefoneRestaurante (
+    CNPJ CHARACTER(14) NOT NULL,
+    DDI INTEGER NOT NULL,
+    DDD INTEGER NOT NULL,
+    Numero INTEGER NOT NULL,
+	PRIMARY KEY (CNPJ),
+	FOREIGN KEY (CNPJ) REFERENCES Restaurante(CNPJ)
+);
+
+CREATE TABLE EmailRestaurante (
+    CNPJ CHARACTER(14) NOT NULL,
+    EnderecoEmail VARCHAR(1000) NOT NULL,
+	PRIMARY KEY (CNPJ),
+	FOREIGN KEY (CNPJ) REFERENCES Restaurante(CNPJ)
+);
+
+
+CREATE TABLE FormaPagamento (
+    CodigoFormaPagamento CHARACTER(2) NOT NULL,
+    NomeFormaPagamento CHARACTER(20) NOT NULL,
+	PRIMARY KEY (CodigoFormaPagamento)
+);
+
+CREATE TABLE Prato (
+    IdPrato INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
+    IdFoto INTEGER,
+    TipoComida VARCHAR(50) NOT NULL,
+    CNPJ CHARACTER(14) NOT NULL,
+    Preco DECIMAL NOT NULL,
+    Descricao VARCHAR(1000) NOT NULL,
+    Estoque INTEGER NOT NULL,
+    QuantidadeVenda INTEGER NOT NULL,
+	PRIMARY KEY (IdPrato),
+	FOREIGN KEY (IdFoto) REFERENCES Foto(IdFoto),
+	FOREIGN KEY (TipoComida) REFERENCES Comida(TipoComida),
+	FOREIGN KEY (CNPJ) REFERENCES Restaurante(CNPJ)
+);
+
+CREATE TABLE Pedido (
+    IdPedido INTEGER GENERATED ALWAYS AS IDENTITY NOT NULL,
+    CodigoFormaPagamento CHARACTER(2) NOT NULL,
+    CPF_Entregador CHARACTER(11) NOT NULL,
+    CPF_Cliente CHARACTER(11) NOT NULL,
+    IdPrato INTEGER NOT NULL,
+    ValorTotal DECIMAL NOT NULL,
+    TempoEstimado DATE NOT NULL,
+	PRIMARY KEY (IdPedido),
+	FOREIGN KEY (CodigoFormaPagamento) REFERENCES FormaPagamento(CodigoFormaPagamento),
+	FOREIGN KEY (CPF_Entregador) REFERENCES Entregador(CPF_Entregador),
+	FOREIGN KEY (CPF_Cliente) REFERENCES Cliente(CPF_Cliente),
+	FOREIGN KEY (IdPrato) REFERENCES Prato(IdPrato)
+);
