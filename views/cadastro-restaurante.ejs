@@ -6,45 +6,70 @@
     <main class="container">
       <h2 class='title text-center my-3'>Cadastro de Restaurante</h2>
       <form>
-        <h4>Informações Fiscais</h4>
+        <h4>Informações Gerais</h4>
         <div class="form-group">
-          <label for="exampleInputPassword1">CPNJ (Apenas números)</label>
-          <input class="form-control" type="text">
+          <label for="cnpj">CNPJ (Apenas números)</label>
+          <input class="form-control" type="text" id="cnpj">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Senha</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Nome Oficial</label>
-          <input class="form-control" type="text">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" id="senha">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Nome Fantasia</label>
-          <input class="form-control" type="text">
+          <label for="nomeOficial">Nome Oficial</label>
+          <input class="form-control" type="text" id="nomeOficial">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Endereço</label>
-          <input class="form-control" type="text">
+          <label for="nomeFantasia">Nome Fantasia</label>
+          <input class="form-control" type="text" id="nomeFantasia">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Telefones</label>
-          <input class="form-control" type="text">
+          <label for="telefone">Telefone <span class="txt-sm">(DDI DDD NUMERO, exemplo: 55 11 912345678)</span></label>
+          <input class="form-control" type="text" id="telefone" name="telefone" placeholder="">
         </div>
         <h4>Informações de Atendimento</h4>
         <div class="form-group">
-          <label for="exampleInputPassword1">Região de atendimento</label>
-          <input class="form-control" type="text">
-        </div>
-        <h5>Horário de Atendimento</h5>
-        <div class="form-group">
-          <label for="exampleInputPassword1">De:</label>
-          <input class="form-control" type="time">
+          <label for="cep">CEP:</label>
+          <input class="form-control cep" type="text" id="cep" name="cep">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Até</label>
-          <input class="form-control" type="time">
+          <label for="Logradouro">Logradouro:</label>
+          <input class="form-control logradouro" type="text" id="Logradouro" name="Logradouro">
         </div>
+        <div class="form-group">
+          <label for="numero">Numero:</label>
+          <input class="form-control numero" type="number" id="Numero" name="Numero">
+        </div>
+        <div class="form-group">
+          <label for="Cidade">Cidade:</label>
+          <input class="form-control cidade" type="text" id="Cidade" name="Cidade">
+        </div>
+        <div class="form-group">
+          <label for="Bairro">Bairro:</label>
+          <input class="form-control bairro" type="text" id="Bairro" name="Bairro">
+        </div>
+        <div class="form-group">
+          <label for="Pais">País:</label>
+          <input class="form-control pais" type="text" id="Pais" name="Pais">
+        </div>
+        <div class="form-group">
+          <label for="Complemento">Complemento:</label>
+          <input class="form-control complemento" type="text" id="Complemento" name="Complemento">
+        </div>
+        <h6>Horário de Atendimento</h6>
+        <div class="form-group">
+          <label for="abertura">De:</label>
+          <input class="form-control" type="time" id="abertura">
+        </div>
+        <div class="form-group">
+          <label for="fechamento">Até</label>
+          <input class="form-control" type="time" id="fechamento">
+        </div>
+        <!-- 
         <div class="form-group">
           <label for="exampleFormControlSelect1">Tipo de comida servida</label>
           <select class="form-control" id="exampleFormControlSelect1">
@@ -57,11 +82,68 @@
             <option value="Lanches">Lanches</option>
             <option value="Mexicana">Mexicana</option>
           </select>
-        </div>
-        <button type="submit" class="btn btn-primary col-12">Finalizar Cadastro</button>
+        </div>-->
+        <button type="button" onclick="submitForm();" class="btn btn-primary col-12">Finalizar Cadastro</button>
       </form>
     </main>
     <%- include('parts/foot'); %>
     </div>
   </body>
 </html>
+
+<script>
+    const submitForm = () => {
+    let email = document.getElementById('email').value;
+    let senha = document.getElementById('senha').value;
+    let nomeOficial = document.getElementById('nomeOficial').value;
+    let nomeFantasia = document.getElementById('nomeFantasia').value;
+    let cnpj = document.getElementById('cnpj').value;
+    let telefone = document.getElementById('telefone').value;
+    let cep = document.getElementById('cep').value;
+    let logradouro = document.getElementById('Logradouro').value;
+    let numero = parseInt(document.getElementById('Numero').value);
+    let cidade = document.getElementById('Cidade').value;
+    let bairro = document.getElementById('Bairro').value;
+    let pais = document.getElementById('Pais').value;
+    let abertura = document.getElementById('abertura').value;
+    let fechamento = document.getElementById('fechamento').value;
+    debugger;
+
+    let newRestaurante = {
+      nomeOficial,
+      nomeFantasia,
+      email,
+      senha,
+      cnpj,
+      telefone,
+      cep,
+      logradouro,
+      numero,
+      cidade,
+      bairro,
+      pais,
+      abertura,
+      fechamento
+    }
+
+    fetch("/cadastro/restaurante", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+    //make sure to serialize your JSON body
+    body: JSON.stringify(newRestaurante)
+    })
+    .then(function(response) {
+      debugger;
+      if(response.status == 201) {
+        window.location.href = "/restaurantes";
+      }
+      else{
+        alert("erro")
+      }
+    })
+  }
+</script>
