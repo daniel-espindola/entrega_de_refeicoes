@@ -7,18 +7,21 @@
       <div class="row mt-3">
         <div class="cadastro col-lg-4 col-12 my-3">
           <h4>Restaurante <i class="fas fa-utensils"></i></h4>
-          <a href="/cadastro/restaurante"class="btn btn-primary mx-1 text-white btn-fixed-size">Cadastro</a>
-          <a href="/login/restaurante" class="btn btn-primary text-white btn-fixed-size">Login</a>
+          <a href="/cadastro/restaurante"class="btn btn-primary mx-1 size my-1 text-white btn-fixed-size">Cadastro de Restaurante</a>
+          <a href="/cadastro/prato"class="btn btn-primary mx-1 my-1 size text-white btn-fixed-size">Cadastro de Prato</a>
+          <a href="/login/restaurante" class="btn btn-primary my-1 size text-white btn-fixed-size">Login</a>
         </div>
         <div class="cadastro col-lg-4 col-12 my-3">
           <h4>Cliente <i class="fas fa-user"></i></h4>
-          <a href="/cadastro/cliente" class="btn btn-primary mx-1 text-white btn-fixed-size">Cadastro</a>
-          <a href="/login/cliente" class="btn btn-primary text-white btn-fixed-size">Login</a>
+          <a href="/cadastro/cliente" class="btn btn-primary mx-1 my-1 size text-white btn-fixed-size">Cadastro</a>
+          <a href="/login/cliente" class="btn btn-primary my-1 mx-1 size text-white btn-fixed-size">Login</a>
+          <a href="/restaurantes"class="btn btn-primary mx-1 my-1 size text-white btn-fixed-size">Encomendar um prato</a>
         </div>
         <div class="cadastro col-lg-4 col-12 my-3">
           <h4>Entregador <i class="fas fa-motorcycle"></i></h4>
-          <a href="/cadastro/entregador" class="btn btn-primary mx-1 text-white btn-fixed-size">Cadastro</a>
-          <a href="/login/entregador" class="btn btn-primary text-white btn-fixed-size">Login</a>
+          <a href="/cadastro/entregador" class="btn btn-primary mx-1 size my-1 text-white btn-fixed-size">Cadastro</a>
+          <a href="/login/entregador" class="btn btn-primary my-1 size text-white btn-fixed-size">Login</a>
+          <a href="/entregas" class="btn btn-primary mx-1 my-1 size text-white btn-fixed-size">Fazer Entregas</a>
         </div>
       </div>
 
@@ -28,3 +31,12 @@
     <%- include('parts/foot'); %>
   </body>
 </html>
+
+<style>
+  .size {
+    text-align: center;
+    vertical-align: middle;
+    width: 150px;
+    height: 65px;
+  }
+</style>

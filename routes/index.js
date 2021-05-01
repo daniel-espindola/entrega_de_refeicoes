@@ -9,6 +9,8 @@ router.get("/", IndexController.index);
 router.get("/restaurantes", IndexController.getAllRestaurantes);
 router.get("/cadastro/restaurante", IndexController.cadastroRestaurante);
 router.post("/cadastro/restaurante", IndexController.cadastroRestaurantePost);
+router.get("/cadastro/prato", IndexController.cadastroPrato);
+router.post("/cadastro/prato", IndexController.cadastroPratoPost);
 router.get("/login/restaurante", IndexController.loginRestaurante);
 router.post("/login/restaurante", IndexController.loginRestaurantePost);
 

@@ -4,40 +4,78 @@
   <body >
     <%- include('parts/navbar'); %>
     <main class="container">
-      <h4 class='title text-center my-3'>Cadastro de Restaurante</h4>
+      <h4 class='title text-center my-3'>Cadastro de Prato</h4>
       <form>
         <div class="form-group">
-          <label for="exampleInputEmail1">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="exampleFormControlSelect1">Tipo de prato</label>
+          <select class="form-control"aria-label="Default select example" name="tipoComida" id="tipoComida">
+            <option value="">- Selecione -</option>
+            <option value="Japonesa">Japonesa</option>
+            <option value="Mexicana">Mexicana</option>
+            <option value="Pizza">Pizza</option>
+            <option value="Brasileira">Brasileira</option>
+            <option value="Massas">Massas</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Italiana">Italiana</option>
+            <option value="Lanches">Lanches</option>
+            <option value="Sobremesas">Sobremesas</option>
+          </select>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Senha</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+          <label for="descricao">Descrição</label>
+          <textarea class="form-control" type="text" id="descricao" cols="30" rows="5"></textarea>
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Nome Oficial</label>
-          <input class="form-control" type="text">
+          <label for="preco">Preço <span class="txt-sm">(BRL)</span></label>
+          <input class="form-control" type="number" id="preco" name="preco">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Nome Fantasia</label>
-          <input class="form-control" type="text">
+          <label for="foto">Foto <span class="txt-sm">(URL)</span></label>
+          <input class="form-control" type="text" id="foto" name="foto">
         </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">CPNJ (Apenas números)</label>
-          <input class="form-control" type="text">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Endereço</label>
-          <input class="form-control" type="text">
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Telefones</label>
-          <input class="form-control" type="text">
-        </div>
-        <button type="submit" class="btn btn-primary col-12">Finalizar Cadastro</button>
+        <button type="button" onclick="submitForm();" class="btn btn-primary col-12">Cadastrar Prato</button>
       </form>
     </main>
     <%- include('parts/foot'); %>
     </div>
   </body>
 </html>
+
+<script>
+  const submitForm = () => {
+    let tipoComida = document.getElementById('tipoComida').value;
+    let descricao = document.getElementById('descricao').value;
+    let preco = document.getElementById('preco').value;
+    let foto = document.getElementById('foto').value;
+    debugger;
+
+    let newUser = {
+      tipoComida,
+      descricao,
+      preco,
+      foto,
+      cnpj: sessionStorage.getItem('cnpj')
+    }
+
+    fetch("/cadastro/prato", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+    //make sure to serialize your JSON body
+    body: JSON.stringify(newUser)
+    })
+    .then(function(response) {
+      debugger;
+      if(response.status == 201) {
+        window.location.href = "/clientes";
+      }
+      else{
+        alert("erro")
+      }
+    })
+  }
+
+</script>

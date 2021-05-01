@@ -229,6 +229,20 @@ const getEntregadores = async () => {
   return results;
 };
 
+const insertPrato = async (prato) => {
+  insertPratoQuery = `
+    INSERT INTO
+      prato (tipocomida, cnpj, preco, descricao, foto)
+    VALUES('${prato.tipoComida}', '${prato.cnpj}', '${prato.preco}', '${prato.descricao}', '${prato.foto}');
+  `;
+
+  let [results, metadata] = await sequelize
+    .query(insertPratoQuery)
+    .catch((err) => console.log(err));
+
+  return "sucesso";
+};
+
 module.exports = {
   insertClientes,
   getClientes,
@@ -236,4 +250,5 @@ module.exports = {
   getRestaurantes,
   insertEntregador,
   getEntregadores,
+  insertPrato,
 };

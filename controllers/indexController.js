@@ -40,6 +40,18 @@ module.exports = {
     res.render("login", { tipo: "restaurante" });
   },
 
+  cadastroPrato: (req, res) => {
+    res.render("cadastro-prato");
+  },
+
+  cadastroPratoPost: async (req, res) => {
+    result = await bd.insertPrato(req.body);
+    if (result == "sucesso") {
+      res.status(201).send("sucesso");
+    } else {
+      res.status(500).send();
+    }
+  },
   // FIM - Rotas dos Restaurantes
 
   // Rotas dos Clientes
@@ -127,12 +139,4 @@ module.exports = {
     res.render("login", { tipo: "entregador" });
   },
   // FIM - Rotas dos Entregadores
-
-  cadastroPrato: (req, res) => {
-    res.render("cadastro-prato");
-  },
-
-  cadastroRefeições: (req, res) => {
-    res.render("cadastro-refeicoes");
-  },
 };
