@@ -4,7 +4,7 @@
   <body>
     <%- include('parts/navbar'); %>
     <main class="container">
-      <h4 class='title text-center my-3'>Cadastro de Cliente</h4>
+      <h4 class='title text-center my-3'>Cadastro de Entregador</h4>
       <form method="post">
         <div class="form-group">
           <label for="email">Email</label>
@@ -34,6 +34,20 @@
           <label for="telefone">Telefone <span class="txt-sm">(DDI DDD NUMERO, exemplo: 55 11 912345678)</span></label>
           <input class="form-control" type="text" id="telefone" name="telefone" placeholder="">
         </div>
+        <h4>Informações do Veículo:</h4>
+        <div class="form-group">
+          <label for="placa">Placa:</label>
+          <input class="form-control cep" type="text" id="placa" name="placa">
+        </div>
+        <div class="form-group">
+          <label for="modelo">Modelo:</label>
+          <input class="form-control cep" type="text" id="modelo" name="modelo">
+        </div>
+        <div class="form-group">
+          <label for="marca">Marca:</label>
+          <input class="form-control cep" type="text" id="marca" name="marca">
+        </div>
+        <h4>Endereço:</h4>
         <div class="form-group">
           <label for="cep">CEP:</label>
           <input class="form-control cep" type="text" id="cep" name="cep">
@@ -71,23 +85,6 @@
 </html>
 
 <script>
-  let addressWrapper = document.querySelector('#addressWrapper');
-  let lastAdress = 0;
-
-  const getEnderecos = () => {
-    enderecos = [];
-    enderecosForm = document.querySelectorAll('.endereco');
-
-    for (const endereco of enderecosForm) {
-      newEndereco = {
-
-      }
-      enderecos.push(newEndereco);
-    }
-
-    return enderecos;
-  }
-
   const submitForm = () => {
     let email = document.getElementById('email').value;
     let senha = document.getElementById('senha').value;
@@ -102,7 +99,9 @@
     let cidade = document.getElementById('Cidade').value;
     let bairro = document.getElementById('Bairro').value;
     let pais = document.getElementById('Pais').value;
-    debugger;
+    let placa = document.getElementById('placa').value;
+    let modelo = document.getElementById('modelo').value;
+    let marca = document.getElementById('marca').value;
 
     let newUser = {
       email,
@@ -117,10 +116,12 @@
       numero,
       cidade,
       bairro,
-      pais
+      pais,
+      placa,
+      modelo,
+      marca
     }
-
-    fetch("/cadastro/cliente", {
+    fetch("/cadastro/entregador", {
     method: "post",
     headers: {
       'Accept': 'application/json',
@@ -131,28 +132,12 @@
     body: JSON.stringify(newUser)
     })
     .then(function(response) {
-      debugger;
       if(response.status == 201) {
-        window.location.href = "/clientes";
+        window.location.href = "/entregador";
       }
       else{
         alert("erro")
       }
     })
-  }
-
-  const addAddress = () => {
-    lastAdress++;
-    let htmlNewAdress = `
-    <div class="endereco" id="">
-
-    </div>
-    `
-
-    let wrapper= document.createElement('div');
-    wrapper.innerHTML= htmlNewAdress;
-    let div= wrapper.firstElementChild;
-    
-    addressWrapper.appendChild(div);
   }
 </script>

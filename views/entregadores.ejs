@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body >
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <h4 class='title text-center my-3'>Entregadores Cadastrados</h4>
+      <div class="row">
+      <% for(user of entregadores) { %>
+        <div class="card col-3 mx-2 p-0">
+          <div class="card-header">
+            <%= user.primeironome %> <%= user.sobrenome %>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">CPF: <%= user.cpf %></li>
+            <li class="list-group-item">RG: <%= user.rg %></li>
+            <li class="list-group-item">Telefone: <%= user.ddi %> <%= user.ddd %> <%= user.numero_telefone %></li>
+            <li class="list-group-item">Email: <%= user.enderecoemail %></li>
+            <li class="list-group-item" style="font-weight:bold">Veículo</li>
+            <li class="list-group-item">Modelo: <%= user.modelo %></li>
+            <li class="list-group-item">Marca: <%= user.marca %></li>
+            <li class="list-group-item">Placa: <%= user.placa %></li>
+            <li class="list-group-item" style="font-weight:bold">Endereço</li>
+            <li class="list-group-item">CEP: <%= user.cep %></li>
+            <li class="list-group-item">Pais: <%= user.pais %></li>
+            <li class="list-group-item">Cidade: <%= user.cidade %></li>
+            <li class="list-group-item">Bairro: <%= user.bairro %></li>
+            <li class="list-group-item">Logradouro: <%= user.logradouro %></li>
+            <li class="list-group-item">Complemento: <%= user.complemento %></li>
+          </ul>
+        </div>
+      <% } %>
+    </div>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>

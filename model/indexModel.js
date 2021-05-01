@@ -143,9 +143,97 @@ const getClientes = async () => {
   return results;
 };
 
+const insertEntregador = async (entregador) => {
+  let entregadorExistenteQuery = `
+  SELECT cpf_entregador
+  FROM  entregador
+  WHERE cpf_entregador = '${entregador.cpf}';
+  `;
+  let [results, metadata] = await sequelize
+    .query(entregadorExistenteQuery)
+    .catch((err) => console.log(err));
+  if (results.length > 0) {
+    return "cpf já cadastrado";
+  }
+
+  let entregadorQuery = ` 
+    INSERT INTO 
+      entregador (senha, cpf_entregador, rg, primeronome, sobrenome)
+      VALUES ('${entregador.senha}', '${entregador.cpf}', '${entregador.rg}', '${entregador.primeiro_nome}', '${entregador.sobrenome}');
+    `;
+
+  [results, metadata] = await sequelize
+    .query(entregadorQuery)
+    .catch((err) => console.log(err));
+
+  //TODO VERIFICAR SE O ENTREGADOR JÁ EXISTE COMO CLIENTE
+  enderecoEntregadorQuery = `
+    INSERT INTO
+      endereco (cpf, cep, logradouro, cidade, bairro, pais, numero, complemento)
+      VALUES (
+        '${entregador.cpf}', '${entregador.cep}', '${entregador.logradouro}', 
+        '${entregador.cidade}', '${entregador.bairro}', '${entregador.pais}', 
+        ${entregador.numero}, ${entregador.complemento || "null"});
+    `;
+  [results, metadata] = await sequelize
+    .query(enderecoEntregadorQuery)
+    .catch((err) => console.log(err));
+
+  emailQuery = `
+    INSERT INTO
+      email
+    VALUES('${entregador.cpf}','${entregador.email}');
+  `;
+  [results, metadata] = await sequelize
+    .query(emailQuery)
+    .catch((err) => console.log(err));
+
+  telefone = entregador.telefone.split(" ");
+  telefoneQuery = `
+    INSERT INTO
+      telefone
+    VALUES('${entregador.cpf}', 
+    ${parseInt(telefone[0])}, 
+    ${parseInt(telefone[1])},
+    ${parseInt(telefone[2])}
+    );
+  `;
+  [results, metadata] = await sequelize
+    .query(telefoneQuery)
+    .catch((err) => console.log(err));
+
+  veiculoQuery = `
+    INSERT INTO
+      veiculo
+    VALUES('${entregador.placa}', '${entregador.cpf}', '${entregador.modelo}', '${entregador.marca}');
+  `;
+
+  [results, metadata] = await sequelize
+    .query(veiculoQuery)
+    .catch((err) => console.log(err));
+
+  return "sucesso";
+};
+
+const getEntregadores = async () => {
+  let getAllEntregadoresQuery = `
+  select 
+  *, t.numero as numero_telefone, en.numero as numero_endereco   
+  from entregador c
+    inner join email e on e.cpf = c.cpf_entregador
+    inner join telefone t on t.cpf = c.cpf_entregador
+    inner join endereco en on en.cpf = c.cpf_entregador
+    inner join veiculo ve on ve.cpf_entregador = c.cpf_entregador;
+  `;
+  let [results, metadata] = await sequelize.query(getAllEntregadoresQuery);
+  return results;
+};
+
 module.exports = {
   insertClientes,
   getClientes,
   insertRestaurantes,
   getRestaurantes,
+  insertEntregador,
+  getEntregadores,
 };

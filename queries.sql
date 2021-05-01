@@ -16,3 +16,11 @@ from restaurante r
     inner join emailRestaurante e on e.cnpj = r.cnpj
     inner join telefoneRestaurante te on te.cnpj = r.cnpj
     inner join enderecoRestaurante er on er.cnpj = r.cnpj;
+
+select 
+*, te.numero as numero_telefone, er.numero as numero_endereco   
+from entregador c
+    inner join email e on e.cpf = c.cpf_entregador
+    inner join telefone t on t.cpf = c.cpf_entregador
+    inner join endereco en on en.cpf = c.cpf_entregador
+    inner join veiculo ve on ve.cpf_entregador = c.cpf_entregador;

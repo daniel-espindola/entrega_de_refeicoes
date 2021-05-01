@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body>
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <p id="tipo" style="display:none"><%= tipo %></p>
+      <h4 class='title text-center my-3'>Login <%= tipo %></h4>
+      <form method="post">
+        <% if(tipo == "restaurante") { %>
+          <div class="form-group">
+            <label for="cnpj">CNPJ</label>
+            <input class="form-control" type="text" id="cnpj">
+          </div>
+        <% }else{ %>
+          <div class="form-group">
+            <label for="cpf">CPF</label>
+            <input class="form-control" type="text" id="cpf">
+          </div>
+        <% } %>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" class="form-control" id="senha" name="senha">
+        </div>
+        <button type="button" onclick="submitForm();" class="btn btn-primary col-12">Logar</button>
+      </form>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>
+
+<script>
+
+  const submitForm = () => {
+    let senha = document.getElementById('senha').value;
+    let tipo = document.getElementById('tipo').innerText;
+
+    if (tipo === "restaurante") {
+      let cnpj = document.getElementById('cnpj').value;
+      sessionStorage.setItem('tipo', 'restaurante')
+      sessionStorage.setItem('cnpj', cnpj);
+      window.location.href = "/";
+    }
+    if (tipo === "cliente") {
+      let cpf = document.getElementById('cpf').value;
+      sessionStorage.setItem('tipo', 'cliente')
+      sessionStorage.setItem('cpf', cpf);
+      window.location.href = "/";
+    }
+    if(tipo === "entregador") {
+      let cpf = document.getElementById('cpf').value;
+      sessionStorage.setItem('tipo', 'entregador')
+      sessionStorage.setItem('cpf', cpf);
+      window.location.href = "/";
+    }
+  }
+</script>
