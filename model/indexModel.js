@@ -255,6 +255,28 @@ const insertPrato = async (prato) => {
   return "sucesso";
 };
 
+const getAllPedidos = async () => {
+  let pedidos = `
+  SELECT *, e.logradouro as clogradouro, e.bairro as cbairro, e.cidade as ccidade, e.numero as cnumero FROM 
+    pedido p
+  INNER JOIN 
+    item i on i.idPedido = p.idPedido
+  INNER JOIN 
+    prato pr on pr.idPrato = i.idPrato
+  INNER JOIN
+  	restaurante r on r.cnpj = pr.cnpj
+  INNER JOIN
+  	cliente c on c.cpf_cliente = p.cpf_cliente
+  INNER JOIN
+    endereco e on e.cpf = c.cpf_cliente
+  INNER JOIN
+  	enderecoRestaurante er on er.cnpj = r.cnpj
+  
+  `;
+  let [results, metadata] = await sequelize.query(pedidos);
+  return results;
+};
+
 const insertPedidos = async (pedidos) => {
   queryInsertPedido = `
       INSERT INTO
@@ -302,4 +324,5 @@ module.exports = {
   insertPrato,
   getAllPratosFromRestaurante,
   insertPedidos,
+  getAllPedidos,
 };

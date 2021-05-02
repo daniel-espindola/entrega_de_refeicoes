@@ -156,7 +156,7 @@ module.exports = {
   },
 
   getAllPedidos: async (req, res) => {
-    res.render("entregadores", { entregadores: await bd.getEntregadores() });
+    res.render("pedidos", { pedidos: await bd.getAllPedidos() });
   },
   // FIM - Rotas dos Entregadores
 };

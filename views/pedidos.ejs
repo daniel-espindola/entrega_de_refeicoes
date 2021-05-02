@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body >
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <% if(pedidos.length == 0){ %>
+        <h4 class='title text-center my-3'>Não há pedidos esperando serem aceitos</h4>
+      <% }else{ %>
+      <h4 class='title text-center my-3'>Pedidos disponíveis</h4>
+      <div class="row">
+      
+        <div class="card col-3 mx-2 p-0">
+          <div class="card-header font-weight-bold">
+            Cliente: <%= pedidos[0].primeironome %> <%= pedidos[0].sobrenome %>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item font-weight-bold">Restaurante: <%= pedidos[0].nomefantasia %></li>
+            <li class="list-group-item font-weight-bold">Endereço Restaurante: <%= pedidos[0].logradouro %>, <%= pedidos[0].numero %>, <%= pedidos[0].bairro %>, <%= pedidos[0].cidade %></li>
+            <h5 class="text-center font-weight-bold my-2">Itens do pedido:</h5>
+      <% for(p of pedidos) { %>
+        <li class="list-group-item"><%= p.quantidadeitem %> <%= p.descricao %></li>
+          
+      <% } %>
+        <h5 class="text-center font-weight-bold my-2">Endereço de entrega:</h5>
+        <li class="list-group-item">Endereço Restaurante: <%= pedidos[0].clogradouro %>, <%= pedidos[0].cnumero %>, <%= pedidos[0].cbairro %>, <%= pedidos[0].ccidade %></li>
+      </ul>
+      <button type="button" onclick="finalizarCompra();" class="btn btn-outline-primary col-12 my-3">Fazer entrega</button>
+      </div>
+      <% } %>
+    </div>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>
+
+<script>
+  let cpf = sessionStorage.getItem('cpf');
+
+  let pedido = [];
+  const addToCart  = (idprato, cnpj) => {
+    let formapagamento = document.getElementById('formapagamento').value;
+    let qtd = window.prompt("Insira a quantidade: ");
+    pedido.push({formapagamento, cpf, cnpj, idprato, qtd});
+  }
+
+  const finalizarCompra = () => {
+    fetch("/cadastro/pedidos", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+    //make sure to serialize your JSON body
+    body: JSON.stringify(pedido)
+    })
+    .then(function(response) {
+      debugger;
+      if(response.status == 201) {
+        window.location.href = `/pedidos`;
+      }
+      else{
+        alert("erro")
+      }
+    })
+  }
+</script>
