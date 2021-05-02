@@ -70,7 +70,7 @@
     .then(function(response) {
       debugger;
       if(response.status == 201) {
-        window.location.href = "/clientes";
+        window.location.href = `/${newUser.cnpj}/pratos`;
       }
       else{
         alert("erro")

@@ -52,6 +52,13 @@ module.exports = {
       res.status(500).send();
     }
   },
+
+  getAllPratosFromRestaurante: async (req, res) => {
+    res.render("pratos", {
+      pratos: await bd.getAllPratosFromRestaurante(req.params.id),
+    });
+  },
+
   // FIM - Rotas dos Restaurantes
 
   // Rotas dos Clientes
@@ -92,6 +99,15 @@ module.exports = {
         res.send("failed");
       }
     } catch {
+      res.status(500).send();
+    }
+  },
+
+  cadastroPedidosPost: async (req, res) => {
+    result = await bd.insertPedidos(req.body);
+    if (result == "sucesso") {
+      res.status(201).send("sucesso");
+    } else {
       res.status(500).send();
     }
   },
@@ -137,6 +153,10 @@ module.exports = {
 
   loginEntregador: async (req, res) => {
     res.render("login", { tipo: "entregador" });
+  },
+
+  getAllPedidos: async (req, res) => {
+    res.render("entregadores", { entregadores: await bd.getEntregadores() });
   },
   // FIM - Rotas dos Entregadores
 };

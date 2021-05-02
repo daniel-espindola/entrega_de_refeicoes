@@ -24,7 +24,7 @@
               <li class="list-group-item">Logradouro: <%= r.logradouro %></li>
               <li class="list-group-item">Complemento: <%= r.complemento %></li>
             </ul>
-            <a href="/cnpj/pratos" class="btn-primary w-100 p-2 text-center">Ver Pratos</a>
+            <a href="/<%= r.cnpj %>/pratos" class="btn-primary w-100 p-2 text-center">Ver Pratos</a>
           </div>
         <% } %>
       </div>

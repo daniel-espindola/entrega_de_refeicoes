@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('parts/head'); %>
+  <body >
+    <%- include('parts/navbar'); %>
+    <main class="container">
+      <% if(pratos.length == 0){ %>
+        <h4 class='title text-center my-3'>Não há pratos cadastrados para esse restaurante</h4>
+      <% }else{ %>
+      
+      <h3 class='title text-center my-3'><%= pratos[0].nomefantasia %></h3>
+      <h4 class='title text-center my-3'>Pratos disponíveis</h4>
+      <div class="row">
+      <% for(prato of pratos) { %>
+        <div class="card col-3 p-1" style="border:none;">
+          <img src="<%= prato.foto %>" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title"><%= prato.tipocomida %></h5>
+            <p class="card-text"><%= prato.descricao %></p>
+            <p class="card-text">Preço: R$ <%= prato.preco %></p>
+            <a onclick="addToCart('<%=prato.idprato%>', '<%=prato.cnpj%>');" class="btn btn-primary w-100 text-white">Adicionar ao pedido</a>
+          </div>
+        </div>
+      <% } %>
+      <% } %>
+    </div>
+    <div class="form-group">
+          <label for="formapagamento">Forma de Pagamento</label>
+          <select class="form-control"aria-label="Default select example" name="formapagamento" id="formapagamento">
+            <option value="">- Selecione -</option>
+            <option value="Cartão">Cartão</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </div>
+    <button type="button" onclick="finalizarCompra();" class="btn btn-outline-primary col-12 my-3">Finalizar Pedido</button>
+    </main>
+    <%- include('parts/foot'); %>
+    </div>
+  </body>
+</html>
+
+<script>
+  let cpf = sessionStorage.getItem('cpf');
+
+  let pedido = [];
+  const addToCart  = (idprato, cnpj) => {
+    let formapagamento = document.getElementById('formapagamento').value;
+    let qtd = window.prompt("Insira a quantidade: ");
+    pedido.push({formapagamento, cpf, cnpj, idprato, qtd});
+  }
+
+  const finalizarCompra = () => {
+    fetch("/cadastro/pedidos", {
+    method: "post",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+
+    //make sure to serialize your JSON body
+    body: JSON.stringify(pedido)
+    })
+    .then(function(response) {
+      debugger;
+      if(response.status == 201) {
+        window.location.href = `/pedidos`;
+      }
+      else{
+        alert("erro")
+      }
+    })
+  }
+</script>

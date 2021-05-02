@@ -229,6 +229,18 @@ const getEntregadores = async () => {
   return results;
 };
 
+const getAllPratosFromRestaurante = async (cnpjRestaurante) => {
+  let pratos = `
+  select 
+  *
+  from prato p
+  left join restaurante r on r.cnpj = p.cnpj
+  where p.cnpj = '${cnpjRestaurante}';
+  `;
+  let [results, metadata] = await sequelize.query(pratos);
+  return results;
+};
+
 const insertPrato = async (prato) => {
   insertPratoQuery = `
     INSERT INTO
@@ -243,6 +255,43 @@ const insertPrato = async (prato) => {
   return "sucesso";
 };
 
+const insertPedidos = async (pedidos) => {
+  queryInsertPedido = `
+      INSERT INTO
+        pedido (formapagamento, cpf_cliente)
+      VALUES('${pedidos[0].formapagamento}', '${pedidos[0].cpf}');
+    `;
+  let [results, metadata] = await sequelize
+    .query(queryInsertPedido)
+    .catch((err) => console.log(err));
+
+  queryIdPedido = `
+    SELECT idpedido FROM pedido
+    ORDER BY idpedido DESC
+    LIMIT 1
+  `;
+  [results, metadata] = await sequelize
+    .query(queryIdPedido)
+    .catch((err) => console.log(err));
+  let idPedido = results[0].idpedido;
+
+  queryInsertItem = `
+      INSERT INTO 
+        item(idPedido, idPrato, quantidadeitem)
+      VALUES
+    `;
+  let pedido;
+  for (pedido of pedidos) {
+    queryInsertItem += `
+      ('${idPedido}', '${pedido.idprato}', '${pedido.qtd}'),`;
+  }
+  queryInsertItem = queryInsertItem.replace(/.$/, ";");
+
+  [results, metadata] = await sequelize
+    .query(queryInsertItem)
+    .catch((err) => console.log(err));
+};
+
 module.exports = {
   insertClientes,
   getClientes,
@@ -251,4 +300,6 @@ module.exports = {
   insertEntregador,
   getEntregadores,
   insertPrato,
+  getAllPratosFromRestaurante,
+  insertPedidos,
 };
